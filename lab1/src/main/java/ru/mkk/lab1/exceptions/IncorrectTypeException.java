@@ -2,6 +2,6 @@ package ru.mkk.lab1.exceptions;
 
 public class IncorrectTypeException extends RuntimeException {
     public IncorrectTypeException() {
-        super("Некорректный тип");
+        super("РќРµСЃРѕРІРјРµСЃС‚РёРјС‹Рµ РєРѕРјРїРѕРЅРµРЅС‚С‹");
     }
 }
