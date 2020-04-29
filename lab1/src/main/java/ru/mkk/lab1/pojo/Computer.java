@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import ru.mkk.lab1.exceptions.InCompatibleComponentException;
-import ru.mkk.lab1.exceptions.IncorrectTypeException;
 
 @Value
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -25,44 +24,47 @@ public class Computer {
     }
 
     public static final class Builder {
-        private Component motherboard;
-        private Component cpu;
-        private Component gpu;
+        private Motherboard motherboard;
+        private CPU cpu;
+        private GPU gpu;
 
         private Builder() {
         }
 
-        public Builder setMotherboard(Component val) throws InCompatibleComponentException {
-            if (val.getType() != Component.Type.MOTHERBOARD)
-                throw new IncorrectTypeException();
+        public Builder setComponent(Component component) throws InCompatibleComponentException {
+            if (component instanceof Motherboard)
+                setMotherboard((Motherboard) component);
+            else if (component instanceof CPU)
+                setCpu((CPU) component);
+            else if (component instanceof GPU)
+                setGpu((GPU) component);
+            else
+                throw new InCompatibleComponentException();
+            return this;
+        }
+
+        private void setMotherboard(Motherboard val) throws InCompatibleComponentException {
             if (cpu != null)
                 isCompatible(val, cpu);
             if (gpu != null)
                 isCompatible(val, gpu);
             motherboard = val;
-            return this;
         }
 
-        public Builder setCpu(Component val) throws InCompatibleComponentException {
-            if (val.getType() != Component.Type.CPU)
-                throw new IncorrectTypeException();
+        private void setCpu(CPU val) throws InCompatibleComponentException {
             if (motherboard != null)
                 isCompatible(val, motherboard);
             if (gpu != null)
                 isCompatible(val, gpu);
             cpu = val;
-            return this;
         }
 
-        public Builder setGpu(Component val) throws InCompatibleComponentException {
-            if (val.getType() != Component.Type.GPU)
-                throw new IncorrectTypeException();
+        private void setGpu(GPU val) throws InCompatibleComponentException {
             if (cpu != null)
                 isCompatible(val, cpu);
             if (motherboard != null)
                 isCompatible(val, motherboard);
             gpu = val;
-            return this;
         }
 
         public Computer build() {

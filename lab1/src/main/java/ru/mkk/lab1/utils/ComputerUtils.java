@@ -3,7 +3,6 @@ package ru.mkk.lab1.utils;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import ru.mkk.lab1.exceptions.InCompatibleComponentException;
-import ru.mkk.lab1.exceptions.IncorrectTypeException;
 import ru.mkk.lab1.pojo.Component;
 import ru.mkk.lab1.pojo.Computer;
 
@@ -19,38 +18,30 @@ public abstract class ComputerUtils {
             @NonNull List<Component> motherboards
     ) {
         List<Computer> computers = new ArrayList<>();
-        cpus.forEach(component -> checkType(component, Component.Type.CPU));
-        gpus.forEach(component -> checkType(component, Component.Type.GPU));
-        motherboards.forEach(component -> checkType(component, Component.Type.MOTHERBOARD));
         for (Component motherboard : motherboards) {
             Computer.Builder computer = computerWithMotherboard(motherboard);
             for (Component gpu : gpus) {
+                try {
+                    computer.setComponent(gpu);
+                } catch (InCompatibleComponentException ignored) {
+                }
+                for (Component cpu : cpus) {
                     try {
-                        computer.setGpu(gpu);
+                        computer.setComponent(cpu);
+                        computers.add(computer.build());
                     } catch (InCompatibleComponentException ignored) {
                     }
-                    for (Component cpu : cpus) {
-                        try {
-                            computer.setCpu(cpu);
-                            computers.add(computer.build());
-                        } catch (InCompatibleComponentException ignored) {
-                        }
-                    }
                 }
+            }
         }
         return Collections.unmodifiableList(computers);
     }
 
-    public static void checkType(Component component, Component.Type type) {
-        if (component.getType() != type)
-            throw new IncorrectTypeException();
-    }
-
-    // можно сказать что это костыль, но при создании нового билдера и установке первого компонента эксепшена
-    // никогда не будет, главное никому не показывайте
+    // РјРѕР¶РЅРѕ СЃРєР°Р·Р°С‚СЊ С‡С‚Рѕ СЌС‚Рѕ РєРѕСЃС‚С‹Р»СЊ, РЅРѕ РїСЂРё СЃРѕР·РґР°РЅРёРё РЅРѕРІРѕРіРѕ Р±РёР»РґРµСЂР° Рё СѓСЃС‚Р°РЅРѕРІРєРµ РїРµСЂРІРѕРіРѕ РєРѕРјРїРѕРЅРµРЅС‚Р° СЌРєСЃРµРїС€РµРЅР°
+    // РЅРёРєРѕРіРґР° РЅРµ Р±СѓРґРµС‚, РіР»Р°РІРЅРѕРµ РЅРёРєРѕРјСѓ РЅРµ РїРѕРєР°Р·С‹РІР°Р№С‚Рµ
     @SneakyThrows
     private static Computer.Builder computerWithMotherboard(@NonNull Component motherboard) {
-        return Computer.newBuilder().setMotherboard(motherboard);
+        return Computer.newBuilder().setComponent(motherboard);
     }
 
 }

@@ -1,23 +1,31 @@
 package ru.mkk.lab1.pojo;
 
-import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Value;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-@Value
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class Component {
+@Getter
+public abstract class Component {
 
     UUID uuid;
-    Type type;
     String name;
     String manufacture;
     List<Component> incompatible;
+
+    public static Component cpu(String name, String manufacture, Component... incompatible) {
+        return new CPU(name, manufacture, Arrays.asList(incompatible));
+    }
+
+    public static Component gpu(String name, String manufacture, Component... incompatible) {
+        return new GPU(name, manufacture, Arrays.asList(incompatible));
+    }
+
+    public static Component motherboard(String name, String manufacture, Component... incompatible) {
+        return new Motherboard(name, manufacture, Arrays.asList(incompatible));
+    }
 
     public boolean isCompatible(@NonNull Component component) {
         for (Component component1 : incompatible) {
@@ -28,19 +36,11 @@ public class Component {
         return true;
     }
 
-    public static Component of(
-            @NonNull Type type,
-            @NonNull String name,
-            @NonNull String manufacture,
-            Component ...incompatible
-    ) {
-        return new Component(UUID.randomUUID(), type, name, manufacture, Arrays.asList(incompatible));
-    }
-
-    public enum Type {
-        CPU,
-        GPU,
-        MOTHERBOARD
+    protected Component(String name, String manufacture, List<Component> incompatible) {
+        this.name = name;
+        this.manufacture = manufacture;
+        this.incompatible = incompatible;
+        uuid = UUID.randomUUID();
     }
 
 }

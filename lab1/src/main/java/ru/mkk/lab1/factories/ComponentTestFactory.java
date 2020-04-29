@@ -21,16 +21,16 @@ public class ComponentTestFactory implements TestFactory {
 
     public ComponentTestFactory() {
         motherboards = List.of(
-                Component.of(Component.Type.MOTHERBOARD, "z370", "msi"),
-                Component.of(Component.Type.MOTHERBOARD, "z380", "msi")
+                Component.motherboard("z370", "msi"),
+                Component.motherboard("z380", "msi")
         );
         gpus = List.of(
-                Component.of(Component.Type.GPU, "1060", "nvidia"),
-                Component.of(Component.Type.GPU, "1080", "nvidia")
+                Component.gpu("1060", "nvidia"),
+                Component.gpu("1080", "nvidia")
         );
         cpus = List.of(
-                Component.of(Component.Type.CPU, "i7 8700k", "intel", motherboards.get(1)),
-                Component.of(Component.Type.CPU, "i7 9700k", "intel", motherboards.get(0))
+                Component.cpu("i7 8700k", "intel", motherboards.get(1)),
+                Component.cpu("i7 9700k", "intel", motherboards.get(0))
         );
     }
 

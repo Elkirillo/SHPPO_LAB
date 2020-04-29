@@ -21,9 +21,9 @@ public class App implements Runnable {
         try {
             System.out.println(computerSerializer.serialize(
                     Computer.newBuilder()
-                            .setMotherboard(motherboards.get(0))
-                            .setCpu(cpus.get(1))
-                            .setGpu(gpus.get(0))
+                            .setComponent(motherboards.get(0))
+                            .setComponent(cpus.get(1))
+                            .setComponent(gpus.get(0))
                             .build()
             ));
         } catch (InCompatibleComponentException e) {
@@ -33,9 +33,9 @@ public class App implements Runnable {
         try {
             System.out.println(computerSerializer.serialize(
                     Computer.newBuilder()
-                            .setMotherboard(motherboards.get(0))
-                            .setCpu(cpus.get(0))
-                            .setGpu(gpus.get(0))
+                            .setComponent(motherboards.get(0))
+                            .setComponent(cpus.get(0))
+                            .setComponent(gpus.get(0))
                             .build()
             ));
         } catch (InCompatibleComponentException e) {
@@ -49,7 +49,7 @@ public class App implements Runnable {
         System.out.println("Все возможные конфигурации: \n" + serializedComputers);
     }
 
-    public App() {  // ���������� �����������
+    public App() {  // подключаем зависимости
         Context context = Context.getInstance();
         cpus = context.getCpus();
         gpus = context.getGpus();
