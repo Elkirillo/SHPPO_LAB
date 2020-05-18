@@ -38,7 +38,6 @@ public abstract class ComputerUtils {
     }
 
     // можно сказать что это костыль, но при создании нового билдера и установке первого компонента эксепшена
-    // никогда не будет, главное никому не показывайте
     @SneakyThrows
     private static Computer.Builder computerWithMotherboard(@NonNull Component motherboard) {
         return Computer.newBuilder().setComponent(motherboard);
