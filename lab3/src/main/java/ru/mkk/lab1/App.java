@@ -22,34 +22,22 @@ public class App implements Runnable {
 
     @Override
     public void run() {
+        for(int i = 1; i <= 3; i++){
         executor.submit(() -> {
             try {
                 System.out.println(computerSerializer.serialize(
                         Computer.newBuilder()
-                                .setComponent(motherboards.get(1))
-                                .setComponent(cpus.get(1))
-                                .setComponent(gpus.get(1))
+                                .setComponent(motherboards.get(i))
+                                .setComponent(cpus.get(i))
+                                .setComponent(gpus.get(i))
                                 .build()
                 ));
             } catch (InCompatibleComponentException e) {
                 e.printStackTrace();
             }
         });
-
-        executor.submit(() -> {
-            try {
-                System.out.println(computerSerializer.serialize(
-                        Computer.newBuilder()
-                                .setComponent(motherboards.get(0))
-                                .setComponent(cpus.get(0))
-                                .setComponent(gpus.get(0))
-                                .build()
-                ));
-            } catch (InCompatibleComponentException e) {
-                e.printStackTrace();
-            }
-        });
-
+        }
+        
         String serializedComputers = ComputerUtils.getAllComputersByComponents(cpus, gpus, motherboards)
                 .parallelStream()
                 .map(computerSerializer::serialize)
