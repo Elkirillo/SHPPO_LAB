@@ -22,7 +22,7 @@ public class App implements Runnable {
 
     @Override
     public void run() {
-        for(int i = 1; i <= 3; i++){
+        for(int i = 0; i <= 1; i++){
         executor.submit(() -> {
             try {
                 System.out.println(computerSerializer.serialize(
